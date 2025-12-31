@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio - Manzuá Hotel & Caçoeira Restaurante</title>
+    <style>
+        /* CONFIGURAÇÃO DE CORES E FONTES */
+        :root {
+            --bg-body: #333333; /* Fundo cinza escuro fora do papel */
+            
+            /* ALTERAÇÃO: Fundo agora é VERDE ESCURO */
+            --bg-paper: #083b24; 
+            
+            /* ALTERAÇÃO: Texto padrão agora é BRANCO */
+            --text-color: #ffffff;
+            
+            --primary-color: #004225; 
+            --accent-color: #ff4d4d; /* Vermelho mais claro para ler no fundo verde */
+            
+            /* ALTERAÇÃO: Pontilhados claros */
+            --dotted-line: #aaaaaa;
+            
+            /* NOVAS CORES PARA CATEGORIA */
+            --cat-bg: #fff5ba; /* Amarelo Claro */
+            --cat-text: #000000; /* Texto Preto */
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* O PAPEL DO CARDÁPIO */
+        .menu-paper {
+            background-color: var(--bg-paper);
+            color: var(--text-color);
+            width: 100%;
+            max-width: 1000px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        /* --- CABEÇALHO (LOGOS) --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* Borda agora é branca ou dourada para destacar no verde? 
+               Vou deixar sutil ou remover a borda para não brigar com o verde */
+            border-bottom: 2px solid #ffffff40;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header-left {
+            text-align: center;
+            width: 30%;
+        }
+
+        /* Fundo branco atrás das logos para elas aparecerem no fundo verde */
+        .logo-bg {
+            background-color: rgba(255,255,255,0.9);
+            padding: 10px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+            width: 40%;
+        }
+
+        .restaurant-logos {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .img-spaten {
+            max-width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .img-restaurante {
+            max-height: 80px;
+            width: auto;
+        }
+
+        img {
+            font-size: 12px;
+            color: #ccc;
+            /* Borda removida para visual final */
+            border: none; 
+        }
+
+        /* --- GRID DO MENU --- */
+        .menu-grid {
+            column-count: 2;
+            column-gap: 50px;
+            column-rule: 1px solid #ffffff40; /* Linha separadora clara */
+        }
+
+        @media (max-width: 768px) {
+            .menu-grid { column-count: 1; }
+            header { flex-direction: column; gap: 20px; }
+            .header-left, .header-right { width: 100%; align-items: center; }
+            .restaurant-logos { justify-content: center; }
+        }
+
+        /* --- CATEGORIAS --- */
+        .category-block {
+            break-inside: avoid;
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            /* ALTERAÇÃO: Background Amarelo Claro e Texto Preto */
+            background-color: var(--cat-bg);
+            color: var(--cat-text);
+            
+            padding: 5px 15px; /* Adicionado padding para ficar bonito o bloco */
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: inline-block;
+            border-radius: 4px; /* Cantos levemente arredondados */
+            font-weight: 800;
+            border-bottom: none; /* Removemos a linha pois agora tem fundo */
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+
+        /* --- ITENS --- */
+        .item {
+            margin-bottom: 12px;
+        }
+
+        .item-row {
+            display: flex;
+            align-items: flex-end;
+            width: 100%;
+        }
+
+        .item-id {
+            font-weight: bold;
+            color: #ffd700; /* Dourado para destacar os números no verde */
+            margin-right: 8px;
+            min-width: 25px;
+        }
+
+        .item-name {
+            /* ALTERAÇÃO: Branco bem "negrito" */
+            font-weight: 900; 
+            color: #ffffff;
+            white-space: nowrap;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* Sombra leve para leitura */
+        }
+
+        .dots {
+            flex-grow: 1;
+            border-bottom: 2px dotted var(--dotted-line);
+            margin: 0 5px 6px 5px;
+            min-width: 20px;
+            opacity: 0.6;
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: #ffffff;
+            font-size: 1.05rem;
+        }
+
+        .item-desc {
+            font-size: 0.85rem;
+            /* Cor clara para descrição */
+            color: #dddddd; 
+            margin-top: 2px;
+            padding-left: 35px;
+            line-height: 1.3;
+            font-style: italic;
+        }
+
+        /* --- RODAPÉ --- */
+        .footer {
+            margin-top: 40px;
+            border-top: 1px solid #ffffff40;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #eeeeee; /* Texto do rodapé claro */
+        }
+
+        .warning-text {
+            color: #ff9999; /* Vermelho claro/salmão para aviso no fundo escuro */
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            border: 1px solid #ff9999;
+            padding: 10px;
+            display: inline-block;
+        }
+        
+        .service-tax {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #fff5ba; /* Amarelo claro igual categoria */
+        }
+    </style>
+</head>
+<body>
+
+<div class="menu-paper">
+    <header>
+        <div class="header-left">
+            <div class="logo-bg">
+                <img src="img/logo-spaten.png" alt="SEIT 1397 SPATEN MUNICH" class="img-spaten">
+            </div>
+        </div>
+
+        <div class="header-right">
+            <div class="restaurant-logos">
+                <div class="logo-bg">
+                    <img src="img/logo-cacoeira.png" alt="CAÇOEIRA RESTAURANTE" class="img-restaurante">
+                </div>
+                <div class="logo-bg">
+                    <img src="img/logo-manzua.png" alt="Manzuá Hotel" class="img-restaurante">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="menu-container" class="menu-grid">
+        </div>
+
+    <div class="footer">
+        <p class="service-tax">COBRAMOS TAXA DE SERVIÇO DE 10%</p>
+        <p>20 - EMBALAGEM (QUENTINHA) R$ 3,00</p>
+        <div class="warning-text">
+            Os passeios oferecidos na praia não são de nossa responsabilidade.<br>
+            Não nos responsabilizaremos por qualquer item deixado em nossas dependências.
+        </div>
+    </div>
+</div>
+
+<script>
+    // DADOS DO CARDÁPIO (Baseados no PDF)
+    const menuData = [
+        {
+            category: "BEBIDAS",
+            items: [
+                { id: "01", name: "Spaten e Original 600ml", price: "R$ 15,00" },
+                { id: "02", name: "Skol, Brahma DM e Chopp 600ml", price: "R$ 13,00" },
+                { id: "03", name: "Budweiser e Amstel 600ml", price: "R$ 14,00" },
+                { id: "04", name: "Stella Artois 600ml", price: "R$ 16,00" },
+                { id: "05", name: "Heineken 600ml", price: "R$ 18,00" },
+                { id: "06", name: "Itaipava e Petra 600ml", price: "R$ 8,00" },
+                { id: "07", name: "Long Neck: Spaten, Bud, Bud Zero", price: "R$ 10,00" },
+                { id: "08", name: "Long Neck: Stella / Sem Glúten", price: "R$ 11,00" },
+                { id: "09", name: "Long Neck: Heineken, Corona, Ice", price: "R$ 12,00" },
+                { id: "10", name: "Água Mineral (500ml)", price: "R$ 5,00" },
+                { id: "11", name: "Coco Verde", price: "R$ 6,00" },
+                { id: "12", name: "Refrigerantes (Lata/H2O)", price: "R$ 7,00" },
+                { id: "13", name: "Suco Copo (Polpa)", price: "R$ 8,00", desc: "(Caju, Cajá, Acerola, Goiaba, Graviola e Manga)" },
+                { id: "14", name: "Suco Copo (Fruta)", price: "R$ 11,00", desc: "(Abacaxi, Maracujá, Laranja, Limão e Suíça)" },
+                { id: "15", name: "Suco Jarra (Polpa)", price: "R$ 15,00" },
+                { id: "16", name: "Suco Jarra (Fruta)", price: "R$ 21,00" }
+            ]
+        },
+        {
+            category: "FRANGOS",
+            items: [
+                { id: "70", name: "Frango Grelhado", price: "R$ 95,00", desc: "(Filé de frango, arroz branco e legumes)" },
+                { id: "71", name: "Frango à Cubana", price: "R$ 110,00", desc: "(Empanado, queijo/banana à milanesa, arroz à grega)" },
+                { id: "72", name: "Frango à Parmegiana", price: "R$ 115,00", desc: "(Filé, macarrão, queijo, molho tomate, arroz branco)" }
+            ]
+        },
+        {
+            category: "CARNES",
+            items: [
+                { id: "80", name: "Filé com Fritas", price: "R$ 140,00", desc: "(Arroz branco e batata frita)" },
+                { id: "81", name: "Filé à Parmegiana", price: "R$ 155,00", desc: "(Macarrão, queijo, molho tomate, arroz branco)" },
+                { id: "82", name: "Carne do Sol", price: "R$ 125,00", desc: "(Baião de dois, macaxeira frita e farofa)" },
+                { id: "83", name: "Filé ao Molho Madeira", price: "R$ 155,00", desc: "(Arroz branco e champignon)" },
+                { id: "85", name: "Chapa Mista", price: "R$ 185,00", desc: "(Carne sol, frango, linguiça, fritas, baião)" },
+                { id: "86", name: "Picanha Importada", price: "R$ 170,00", desc: "(Baião, fritas, farofa e vinagrete)" }
+            ]
+        },
+        {
+            category: "PETISCOS",
+            items: [
+                { id: "36", name: "Caldo de Peixe (300ml)", price: "R$ 25,00" },
+                { id: "37", name: "Caldo de Camarão (300ml)", price: "R$ 35,00" },
+                { id: "38", name: "Pastel de Camarão (12 un)", price: "R$ 45,00" },
+                { id: "39", name: "Pastel Queijo/Carne (12 un)", price: "R$ 30,00" },
+                { id: "40", name: "Isca de Peixe", price: "R$ 40,00" },
+                { id: "41", name: "Bolinha de Peixe", price: "R$ 25,00" },
+                { id: "42", name: "Bolinha de Queijo", price: "R$ 25,00" },
+                { id: "44", name: "Batata Frita", price: "R$ 27,00" },
+                { id: "45", name: "Macaxeira Frita", price: "R$ 27,00" },
+                { id: "46", name: "Camarão Alho e Óleo (Com casca)", price: "R$ 60,00" },
+                { id: "47", name: "Camarão Alho e Óleo (Sem casca)", price: "R$ 75,00" },
+                { id: "48", name: "Camarão à Milanesa", price: "R$ 80,00" },
+                { id: "49", name: "Carne do Sol Trinchada", price: "R$ 70,00" },
+                { id: "50", name: "Queijo à Milanesa", price: "R$ 30,00" },
+                { id: "51", name: "Posta de Peixe", price: "R$ 80,00" },
+                { id: "52", name: "Frango a Passarinho", price: "R$ 55,00" },
+                { id: "53", name: "Moqueca de Arraia", price: "R$ 70,00" },
+                { id: "54", name: "Piaba", price: "R$ 40,00" },
+                { id: "55", name: "Concha Jereré", price: "R$ 37,00" },
+                { id: "56", name: "Vinagrete de Lagosta", price: "R$ 45,00" },
+                { id: "57", name: "Vinagrete de Camarão", price: "R$ 45,00" },
+                { id: "58", name: "Vinagrete de Polvo", price: "R$ 45,00" },
+                { id: "59", name: "Casquinha de Caranguejo", price: "R$ 37,00" },
+                { id: "60", name: "Patinha de Caranguejo", price: "R$ 45,00" }
+            ]
+        },
+        {
+            category: "KIDS",
+            items: [
+                { id: "87", name: "Bob Esponja", price: "R$ 70,00", desc: "(Isca de peixe, fritas e arroz branco)" },
+                { id: "88", name: "Rei Leão", price: "R$ 85,00", desc: "(Filé carne trinchado, fritas e arroz branco)" },
+                { id: "89", name: "Homem Aranha", price: "R$ 60,00", desc: "(Filé frango trinchado, purê e arroz branco)" }
+            ]
+        },
+        {
+            category: "GUARNIÇÕES",
+            items: [
+                { id: "130", name: "Arroz Branco", price: "R$ 15,00" },
+                { id: "131", name: "Arroz à Grega", price: "R$ 20,00" },
+                { id: "132", name: "Arroz de Brócolis", price: "R$ 20,00" },
+                { id: "133", name: "Arroz Piamontese", price: "R$ 20,00" },
+                { id: "134", name: "Arroz de Alho", price: "R$ 20,00" },
+                { id: "135", name: "Baião de Dois", price: "R$ 20,00" },
+                { id: "136", name: "Baião de Dois com Nata", price: "R$ 28,00" },
+                { id: "137", name: "Purê de Batata", price: "R$ 16,00" },
+                { id: "138", name: "Feijão", price: "R$ 20,00" },
+                { id: "139", name: "Pirão", price: "R$ 20,00" }
+            ]
+        },
+        {
+            category: "SALADAS",
+            items: [
+                { id: "61", name: "Salada Simples", price: "R$ 30,00", desc: "(Repolho, tomate, cenoura, cebola roxa, cheiro-verde)" },
+                { id: "62", name: "Salada Tropical", price: "R$ 45,00", desc: "(Manga, alface, tomate cereja, queijo coalho, abacaxi)" },
+                { id: "63", name: "Legumes Especial", price: "R$ 45,00", desc: "(Batata, cenoura, chuchu, beterraba, ovos, brócolis)" }
+            ]
+        },
+        {
+            category: "SOBREMESAS",
+            items: [
+                { id: "64", name: "Pudim", price: "R$ 12,00" },
+                { id: "65", name: "Brownie com Sorvete", price: "R$ 20,00" },
+                { id: "66", name: "Café Expresso", price: "R$ 7,00" },
+                { id: "67", name: "Brownie", price: "R$ 10,00" }
+            ]
+        },
+        {
+            category: "PEIXES",
+            items: [
+                { id: "90", name: "Peixe Molho Camarão", price: "R$ 150,00", desc: "(Arroz branco e purê)" },
+                { id: "91", name: "Peixe à Delícia", price: "R$ 120,00", desc: "(Molho branco, banana e arroz branco)" },
+                { id: "92", name: "Peixe Grelhado", price: "R$ 110,00", desc: "(Arroz branco e batata frita)" },
+                { id: "93", name: "Sirigado Grelhado", price: "R$ 130,00", desc: "(Arroz de brócolis e batata sauté)" },
+                { id: "94", name: "Filé Caçoeira", price: "R$ 170,00", desc: "(Recheado c/ camarão/catupiry, gratinado, arroz)" },
+                { id: "95", name: "Peixe Frito Família", price: "R$ 300,00", desc: "(2 porções baião, batata e farofa)" },
+                { id: "96", name: "Salmão Caçoeira", price: "R$ 180,00", desc: "(Grelhado, molho maracujá, arroz branco)" },
+                { id: "97", name: "Salmão Grelhado", price: "R$ 170,00", desc: "(Batata sauté e arroz à grega)" },
+                { id: "98", name: "Peixe Frito Grande", price: "R$ 200,00", desc: "(Arroz/baião, batata e farofa)" },
+                { id: "99", name: "Peixe Frito Médio", price: "R$ 180,00", desc: "(Arroz/baião, batata e farofa)" },
+                { id: "100", name: "Peixada (Postas)", price: "R$ 120,00", desc: "(Leite coco, arroz, pirão e ovos)" },
+                { id: "101", name: "Peixada (Tilápia)", price: "R$ 130,00", desc: "(Leite coco, arroz, pirão e ovos)" },
+                { id: "102", name: "Peixada de Filé", price: "R$ 140,00", desc: "(Leite coco, arroz, pirão e ovos)" },
+                { id: "103", name: "Peixe ao Manzuá", price: "R$ 180,00", desc: "(Grelhado, alcaparras, champignon, camarão, arroz brócolis)" },
+                { id: "104", name: "Tilápia Grelhada", price: "R$ 120,00", desc: "(Arroz branco e batata frita)" },
+                { id: "105", name: "Tilápia Frita", price: "R$ 120,00", desc: "(Arroz branco e batata frita)" },
+                { id: "106", name: "Lagoinha Duplo", price: "R$ 170,00", desc: "(Peixe, camarão milanesa, arroz, fritas)" },
+                { id: "107", name: "Moqueca Mista", price: "R$ 170,00", desc: "(Peixe, camarão, arroz branco e pirão)" }
+            ]
+        },
+        {
+            category: "FRUTOS DO MAR",
+            items: [
+                { id: "110", name: "Trio Manzuá", price: "R$ 240,00", desc: "(Peixe, lagosta, camarão, legumes, arroz)" },
+                { id: "111", name: "Lagosta Grelhada", price: "R$ 220,00", desc: "(Arroz de alho e batata)" },
+                { id: "112", name: "Camarão à Parmegiana", price: "R$ 170,00", desc: "(Empanado, macarrão, queijo, arroz)" },
+                { id: "113", name: "Camarão à Grega", price: "R$ 160,00", desc: "(Empanado e arroz à grega)" },
+                { id: "114", name: "Risoto de Camarão", price: "R$ 160,00", desc: "(Camarão, arroz, creme leite, leite coco)" },
+                { id: "115", name: "Paella Manzuá (4 p)", price: "R$ 320,00", desc: "(Lagosta, camarão, polvo, lula, mexilhão)" },
+                { id: "116", name: "Paella Manzuá (2 p)", price: "R$ 220,00", desc: "(Lagosta, camarão, polvo, lula, mexilhão)" },
+                { id: "117", name: "Quarteto Caçoeira (4p)", price: "R$ 320,00", desc: "(Lagosta, camarão, polvo, sirigado, batata)" },
+                { id: "118", name: "Quarteto Caçoeira (2p)", price: "R$ 250,00", desc: "(Lagosta, camarão, polvo, sirigado, batata)" }
+            ]
+        }
+    ];
+
+    function renderMenu() {
+        const container = document.getElementById('menu-container');
+        
+        menuData.forEach(section => {
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'category-block';
+            
+            const title = document.createElement('h2');
+            title.innerText = section.category;
+            sectionDiv.appendChild(title);
+
+            section.items.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'item';
+                
+                const row = document.createElement('div');
+                row.className = 'item-row';
+                
+                const idSpan = document.createElement('span');
+                idSpan.className = 'item-id';
+                idSpan.innerText = item.id;
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'item-name';
+                nameSpan.innerText = item.name;
+                
+                const dotsDiv = document.createElement('div');
+                dotsDiv.className = 'dots';
+                
+                const priceSpan = document.createElement('span');
+                priceSpan.className = 'item-price';
+                priceSpan.innerText = item.price;
+                
+                row.appendChild(idSpan);
+                row.appendChild(nameSpan);
+                row.appendChild(dotsDiv);
+                row.appendChild(priceSpan);
+                itemDiv.appendChild(row);
+                
+                if (item.desc) {
+                    const descDiv = document.createElement('div');
+                    descDiv.className = 'item-desc';
+                    descDiv.innerText = item.desc;
+                    itemDiv.appendChild(descDiv);
+                }
+                
+                sectionDiv.appendChild(itemDiv);
+            });
+            
+            container.appendChild(sectionDiv);
+        });
+    }
+
+    renderMenu();
+</script>
+
+</body>
+</html>
